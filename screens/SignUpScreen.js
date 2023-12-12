@@ -14,12 +14,12 @@ export default function SignUpScreen() {
       style={{ backgroundColor: themeColors.bg }}
     >
       <SafeAreaView className="flex">
-        <View className="flex-row justify-start">
+        <View className="flex-row p-4 justify-start">
           <TouchableOpacity
             onPress={() => navigation.goBack()}
-            className="bg-yellow-400 p-2 rounded-tr-2xl rounded-bl-2xl ml-4"
+            className="bg-white mt-6 p-2 rounded-tr-2xl rounded-bl-2xl ml-4"
           >
-            <ArrowLeftIcon size="20" color="black" />
+            <ArrowLeftIcon size="20" color="#007AFF" />
           </TouchableOpacity>
         </View>
         <View className="flex-row justify-center">
@@ -53,8 +53,11 @@ export default function SignUpScreen() {
             value="test12345"
             placeholder="Enter Password"
           />
-          <TouchableOpacity className="py-3 bg-yellow-400 rounded-xl">
-            <Text className="font-xl font-bold text-center text-gray-700">
+          <TouchableOpacity
+            onPress={() => navigation.navigate("Home")}
+            className="py-3 border-2 border-gray-300 rounded-xl"
+          >
+            <Text className="text-xl font-bold text-center text-[#007AFF]">
               Sign Up
             </Text>
           </TouchableOpacity>
@@ -64,7 +67,7 @@ export default function SignUpScreen() {
             Already have an account?
           </Text>
           <TouchableOpacity onPress={() => navigation.navigate("Login")}>
-            <Text className="font-semibold text-yellow-500"> Login</Text>
+            <Text className="font-semibold text-[#007AFF]"> Login</Text>
           </TouchableOpacity>
         </View>
       </View>

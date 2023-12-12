@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -6,10 +6,13 @@ import {
   Image,
   FlatList,
   TouchableOpacity,
+  StyleSheet,
+  ScrollView,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useNavigation } from "@react-navigation/native"; // Import useNavigation hook
+import { useNavigation } from "@react-navigation/native";
 import { themeColors } from "../theme";
+import * as Font from "expo-font";
 
 const data = [
   { id: 1, title: "Site", route: "SiteScreen" },
@@ -21,14 +24,45 @@ const data = [
 ];
 
 export default function HomeScreen() {
-  const navigation = useNavigation(); // Hook to get navigation object
+  const navigation = useNavigation();
+  const [selectedItem, setSelectedItem] = useState(
+    data.find((item) => item.title === "Site")
+  );
+  const [fontsLoaded, setFontsLoaded] = useState(false);
 
+  useEffect(() => {
+    const loadFonts = async () => {
+      await Font.loadAsync({
+        "SF-Pro-Text-Medium": require("../assets/fonts/SF-Pro-Text-Medium.otf"),
+        "SF-Pro-Text-Bold": require("../assets/fonts/SF-Pro-Text-Bold.otf"),
+        "SF-Pro-Text-Regular": require("../assets/fonts/SF-Pro-Text-Regular.otf"),
+        "Whisper-Regular": require("../assets/fonts/Whisper-Regular.ttf"),
+      });
+      setFontsLoaded(true);
+    };
+
+    loadFonts();
+  }, []);
+
+  if (!fontsLoaded) {
+    return <Text>Loading...</Text>;
+  }
   const renderItem = ({ item }) => (
     <TouchableOpacity
-      onPress={() => navigation.navigate(item.route)} // Navigate to the specified route
+      onPress={() => {
+        setSelectedItem(item);
+        navigation.navigate(item.route);
+      }}
+      className=" border-gray-300 "
       style={{
+        borderWidth: 3,
         flex: 1,
-        backgroundColor: themeColors.cardbg,
+        padding: 10,
+        backgroundColor: "white",
+        shadowColor: "#c4c4c4",
+        shadowOpacity: 0.5,
+        shadowRadius: 5,
+        elevation: 5,
         borderRadius: 25,
         width: 150,
         height: 150,
@@ -36,22 +70,26 @@ export default function HomeScreen() {
         marginBottom: 10,
         justifyContent: "center",
         alignItems: "center",
-        shadowOpacity: 0.53,
-        elevation: 1.5,
       }}
     >
-      <Text className="text-lg font-bold text-black">{item.title}</Text>
+      <Text
+        className={`text-base p-3 text-[#007AFF] ${
+          selectedItem && selectedItem.id === item.id ? "selected-item" : ""
+        }`}
+        style={styles.text}
+      >
+        {item.title}
+      </Text>
     </TouchableOpacity>
   );
 
   return (
-    <SafeAreaView
-      className="flex-1 bg-white"
-      style={{ backgroundColor: themeColors.bg }}
-    >
-      <View className="p-6">
+    <SafeAreaView className="flex-1 ">
+      <View className="p-6 ">
         <View className="flex-row justify-between">
-          <Text className="text-2xl font-bold text-gray-700">Hi, John</Text>
+          <Text className=" text-gray-700" style={styles.nameText}>
+            Hi, John
+          </Text>
           <TouchableOpacity onPress={() => navigation.navigate("Settings")}>
             <Image
               source={require("../assets/images/login.png")}
@@ -59,11 +97,40 @@ export default function HomeScreen() {
             />
           </TouchableOpacity>
         </View>
-        <Text className="text-gray-700 mt-2">Welcome to your dashboard</Text>
+        <Text className="text-[#007AFF] mt-2 " style={styles.smallText}>
+          Welcome to your dashboard
+        </Text>
       </View>
-      <View
-        className="flex-1 bg-white shadow-md border-black px-8 pt-8 mt-10"
+      {/* <ScrollView
+        className="bg-white "
         style={{ borderTopLeftRadius: 50, borderTopRightRadius: 50 }}
+      >
+        <View className="flex-1 mt-10">
+          <FlatList
+            data={data}
+            renderItem={renderItem}
+            keyExtractor={(item) => item.id.toString()}
+            numColumns={2}
+            contentContainerStyle={{
+              paddingVertical: 20,
+              paddingHorizontal: 5,
+            }}
+            showsVerticalScrollIndicator={false}
+          />
+          {selectedItem && (
+            <View>
+              <Text>{`Content for ${selectedItem.title}`}</Text>
+            </View>
+          )}
+        </View>
+      </ScrollView> */}
+      <View
+        className="flex-1 bg-white shadow-md border-black px-5 pt-8 mt-10"
+        style={{
+          borderTopLeftRadius: 50,
+          borderTopRightRadius: 50,
+          // backgroundColor: themeColors.bg,
+        }}
       >
         <FlatList
           data={data}
@@ -77,3 +144,29 @@ export default function HomeScreen() {
     </SafeAreaView>
   );
 }
+
+const styles = StyleSheet.create({
+  buttonText: {
+    fontSize: 20,
+    fontWeight: "bold",
+    textAlign: "center",
+    color: "black",
+    fontFamily: "SF-Pro-Text-Medium",
+  },
+  text: {
+    textAlign: "center",
+    fontFamily: "SF-Pro-Text-Bold",
+  },
+  smallText: {
+    fontFamily: "SF-Pro-Text-Regular",
+    fontSize: 18,
+  },
+  mainHeading: {
+    fontFamily: "Whisper-Regular",
+    textAlign: "center",
+  },
+  nameText: {
+    fontFamily: "SF-Pro-Text-Bold",
+    fontSize: 35,
+  },
+});

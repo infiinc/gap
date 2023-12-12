@@ -38,13 +38,13 @@ export default function WelcomeScreen() {
     <SafeAreaView style={{ backgroundColor: themeColors.bg }}>
       <View>
         <ImageBackground
-          source={require("../assets/images/building1.jpg")}
+          source={require("../assets/images/building3.jpg")}
           style={{ width: "100%", height: "100%" }}
         >
           <View className="flex-1 flex justify-around my-4">
             <Text
               style={styles.mainHeading}
-              className="text-black text-5xl text-center"
+              className="text-black  text-6xl text-center"
             >
               Let's Get Started!
             </Text>
