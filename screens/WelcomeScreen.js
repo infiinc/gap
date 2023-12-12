@@ -57,7 +57,7 @@ export default function WelcomeScreen() {
               >
                 <Text
                   style={styles.buttonText}
-                  className="text-xl font-bold text-center text-gray-700"
+                  className="text-xl font-bold text-center text-[#007AFF]"
                 >
                   Sign Up
                 </Text>
@@ -69,7 +69,7 @@ export default function WelcomeScreen() {
                 <TouchableOpacity onPress={() => navigation.navigate("Login")}>
                   <Text
                     style={styles.smallText}
-                    className=" underline text-gray-100"
+                    className=" underline  text-[#007AFF]"
                   >
                     Log In
                   </Text>
@@ -88,7 +88,6 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "bold",
     textAlign: "center",
-    color: "black",
     fontFamily: "SF-Pro-Text-Medium",
   },
   text: {
